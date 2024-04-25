@@ -17,3 +17,8 @@ class SignUpView(View):
             return redirect("login")
         else:
             return render(request, "registration/signup.html", {"form": form})
+
+
+class ManageAccountView(View):
+    def get(self, request):
+        return render(request, "manage_account.html", {"active": "manage_account"})
