@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views import View
 from .forms import CustomUserCreationForm, UserEditForm
 
@@ -35,6 +37,7 @@ class UserEditView(View):
             return render(request, "registration/user_edit_form.html", {"form": form})
 
 
+@method_decorator(login_required, name="dispatch")
 class ManageAccountView(View):
     def get(self, request):
         return render(request, "manage_account.html", {"active": "manage_account"})
