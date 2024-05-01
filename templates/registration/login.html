@@ -8,8 +8,21 @@
     {% csrf_token %}
     {{ form | crispy }}
     <button type="submit" class="btn btn-success">Log In</button>
+    <p ><a href="{% url 'password_reset' %}">Forgotten Password?</a></p>
 </form>
 
-<p><a href="{% url 'password_reset' %}">Forgotten Password?</a></p>
-<p>Don't have an account?<a href="{% url 'signup' %}">Sign Up</a></p>
+
+<p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+
+<p class="text-center">Or Login With</p>
+<div class="d-flex justify-content-center gap-2">
+  <div class="p-4"><a href="{% url 'social:begin' 'facebook' %}">
+    Facebook
+  </a></div>
+  <div class="p-4"><a href="{% url 'social:begin' 'github' %}"> 
+    Github
+  </a></div>
+</div>
+
+
 {% endblock main %}
