@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from .models import Post
 from .forms import PostForm
 
 # Create your views here.
@@ -11,7 +12,8 @@ from .forms import PostForm
 
 class HomePageView(View):
     def get(self, request):
-        return render(request, "home.html", {"active": "home"})
+        posts = Post.objects.all()
+        return render(request, "home.html", {"active": "home", "posts": posts})
 
 
 @method_decorator(login_required, name="dispatch")

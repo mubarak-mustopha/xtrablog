@@ -9,4 +9,16 @@
         {{ form | crispy }}
         <button type="submit" class="btn btn-success">Sign Up</button>
     </form>
+
+    <p>Already created an account? <a href="{% url 'login' %}">Log in</a></p>
+
+    <p class="text-center">Or Sign Up With</p>
+    <div class="d-flex justify-content-center gap-2">
+    <div class="p-4"><a href="{% url 'social:begin' 'facebook' %}">
+        Facebook
+    </a></div>
+    <div class="p-4"><a href="{% url 'social:begin' 'github' %}"> 
+        Github
+    </a></div>
+    </div>
 {% endblock main %}
