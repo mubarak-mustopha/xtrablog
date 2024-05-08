@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 
@@ -33,3 +33,29 @@ class CreatePostView(View):
             messages.success(request, "Post successfully created.")
             return redirect("home")
         return render(request, "post_form.html", {"form": form})
+
+
+@method_decorator(login_required, name="dispatch")
+class UpdatePostView(View):
+    form_class = PostForm
+
+    def get(self, request, pk):
+        post = Post.objects.get(id=pk)
+        form = self.form_class(instance=post)
+        return render(request, "post_form.html", {"form": form})
+
+
+@method_decorator(login_required, name="dispatch")
+class PostView(View):
+    def get(self, request, pk, slug):
+        post = Post.objects.get(id=pk, slug=slug)
+        comments = post.comments.all()
+        form = CommentForm()
+        tag_names = post.tags.values_list("name", flat=True)
+        context = {
+            "post": post,
+            "comments": comments,
+            "form": form,
+            "tag_names": tag_names,
+        }
+        return render(request, "post.html", context)
