@@ -23,6 +23,7 @@
                     </p>
                     <div class="d-flex justify-content-between tm-pt-45">
                         <!-- <span class="tm-color-primary">Travel . Events</span> -->
+                        <span class="tm-color-primary">{{ post.tags.all|join:" . " }}</span>
                         <span class="tm-color-primary">{{ post.created|date:"F d, Y" }}</span>
                     </div>
                     <hr>
