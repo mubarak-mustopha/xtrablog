@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block main %}
+
+<div class="row tm-row">
+    <div class="col-12">
+        <hr class="tm-hr-primary tm-mb-55">
+        <!-- Video player 1422x800 -->
+        <img src="{{post.image.url}}" controls class="tm-mb-40">
+        </img>
+    </div>
+</div>
+
+<div class="row tm-row">
+    <div class="tm-post-full">
+        <div class="mb-4">
+            <h2 class="pt-2 tm-color-primary tm-post-title">{{post.title}}</h2>
+            <p class="tm-mb-40">{{ post.created|date:"M d, Y" }} posted by Admin Nat</p>
+            <p>
+                {{post.description}}
+            </p>
+            <span class="d-block text-right tm-color-primary">{{ tag_names|join:" . " }}</span>
+
+            {% if request.user == post.user %}
+                <a href="" class="btn rounded-pill" style="background: #0CC;color: white;">Update Post</a>
+            {% endif %}
+        </div>
+
+        <!-- comments -->
+        <h2 class="tm-color-primary tm-post-title">Comments</h2>
+        <hr class="tm-hr-primary tm-mb-45">
+        {% for comment in comments %}
+            <div class="tm-comment tm-mb-45">
+                <figure class="tm-comment-figure">
+                    {% with comment_user as comment.user %}
+                        <img src="{{comment_user.image.url}}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                        <figcaption class="tm-color-primary text-center">comment_user.username</figcaption>
+                    {% endwith %}
+                </figure>
+                <div>
+                    <p>
+                       {{comment.description}}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <span class="tm-color-primary">{{comment.created|date:"M d,Y"}}</span>
+                    </div>                                                 
+                </div>                                
+            </div>
+        {% endfor %}
+        <!-- comments end -->
+
+        <form action="" method="POST">
+            <h1>Add Comment</h1>
+
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock main %}
