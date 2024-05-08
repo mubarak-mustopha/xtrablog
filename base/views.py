@@ -39,9 +39,11 @@ class CreatePostView(View):
 class UpdatePostView(View):
     form_class = PostForm
 
-    def get(self, request, pk):
-        post = Post.objects.get(id=pk)
+    def get(self, request, pk, slug):
+        post = Post.objects.get(id=pk, slug=slug)
         form = self.form_class(instance=post)
+        tag_names = post.tags.values_list("name", flat=True)
+        form.fields["tags"].initial = ", ".join(tag_names)
         return render(request, "post_form.html", {"form": form})
 
 
