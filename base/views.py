@@ -4,8 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from .models import Post
+from .models import Post, Tag
 from .forms import PostForm, CommentForm
+from .utils import add_post_tags
 
 # Create your views here.
 
@@ -29,6 +30,9 @@ class CreatePostView(View):
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
+            tags = form.cleaned_data["tags"].split(",")
+            post.save()
+            add_post_tags(post, tags)
             post.save()
             messages.success(request, "Post successfully created.")
             return redirect("home")
@@ -53,11 +57,9 @@ class PostView(View):
         post = Post.objects.get(id=pk, slug=slug)
         comments = post.comments.all()
         form = CommentForm()
-        tag_names = post.tags.values_list("name", flat=True)
         context = {
             "post": post,
             "comments": comments,
             "form": form,
-            "tag_names": tag_names,
         }
         return render(request, "post.html", context)
