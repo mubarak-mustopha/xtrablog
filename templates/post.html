@@ -24,7 +24,7 @@
             <span class="d-block text-right tm-color-primary">{{ tag_names|join:" . " }}</span>
 
             {% if request.user == post.user %}
-                <a href="" class="btn rounded-pill" style="background: #0CC;color: white;">Update Post</a>
+                <a href="{% url 'update-post' post.id post.slug %}" class="btn rounded-pill" style="background: #0CC;color: white;">Update Post</a>
             {% endif %}
         </div>
 
