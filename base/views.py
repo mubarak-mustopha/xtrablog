@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -35,7 +36,7 @@ class CreatePostView(View):
             add_post_tags(post, tags)
             post.save()
             messages.success(request, "Post successfully created.")
-            return redirect("home")
+            return redirect(post)
         return render(request, "post_form.html", {"form": form})
 
 
@@ -63,3 +64,13 @@ class PostView(View):
             "form": form,
         }
         return render(request, "post.html", context)
+
+    def post(self, request, pk, slug):
+        post = Post.objects.get(id=pk, slug=slug)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+        return redirect(post)
