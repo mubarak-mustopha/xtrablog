@@ -17,7 +17,7 @@
     <div class="tm-post-full">
         <div class="mb-4">
             <h2 class="pt-2 tm-color-primary tm-post-title">{{post.title}}</h2>
-            <p class="tm-mb-40">{{ post.created|date:"M d, Y" }} posted by Admin Nat</p>
+            <p class="tm-mb-40">{{ post.created|date:"M d, Y" }} posted by {{post.user.username}}</p>
             <p>
                 {{post.description}}
             </p>
@@ -34,9 +34,9 @@
         {% for comment in comments %}
             <div class="tm-comment tm-mb-45">
                 <figure class="tm-comment-figure">
-                    {% with comment_user as comment.user %}
-                        <img src="{{comment_user.image.url}}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
-                        <figcaption class="tm-color-primary text-center">comment_user.username</figcaption>
+                    {% with comment_user=comment.user %}
+                        <img src="{{comment_user.photo.url}}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                        <figcaption class="tm-color-primary text-center">{{comment_user.username}}</figcaption>
                     {% endwith %}
                 </figure>
                 <div>
@@ -51,13 +51,17 @@
         {% endfor %}
         <!-- comments end -->
 
-        <form action="" method="POST">
-            <h1>Add Comment</h1>
+        {% if post.user != request.user %}
 
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-success">Submit</button>
-        </form>
+            <form action="" method="POST">
+                <h1>Add Comment</h1>
+
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        
+        {% endif %}    
 
     </div>
 </div>

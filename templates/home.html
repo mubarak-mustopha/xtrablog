@@ -11,7 +11,7 @@
             {% for post in posts %}
                 <article class="col-12 col-md-6 tm-post">
                     <hr class="tm-hr-primary">
-                    <a href="{% url 'post' post.id post.slug %}" class="effect-lily tm-post-link tm-pt-60">
+                    <a href="{{ post.get_absolute_url }}" class="effect-lily tm-post-link tm-pt-60">
                         <div class="tm-post-link-inner">
                             <img src="{{post.image.url}}" alt="Image" class="img-fluid">                            
                         </div>
@@ -29,10 +29,10 @@
                     <hr>
                     <div class="d-flex justify-content-between">
                         <span>{{post.comments.count}} comments</span>
-                        {% if user.first_name and user.last_name %}
-                            <span>by {{user.first_name}} {{user.last_name}}</span>
+                        {% if post.user.first_name and post.user.last_name %}
+                            <span>by {{post.user.first_name}} {{post.user.last_name}}</span>
                         {% else %}
-                            <span>by {{user.username}}</span>
+                            <span>by {{post.user.username}}</span>
                         {% endif %}
                     </div>
                 </article>
