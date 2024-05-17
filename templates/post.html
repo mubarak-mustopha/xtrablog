@@ -17,7 +17,13 @@
     <div class="tm-post-full">
         <div class="mb-4">
             <h2 class="pt-2 tm-color-primary tm-post-title">{{post.title}}</h2>
-            <p class="tm-mb-40">{{ post.created|date:"M d, Y" }} posted by {{post.user.username}}</p>
+            <p class="tm-mb-40">{{ post.created|date:"M d, Y" }} posted by 
+                {% if post.user.first_name and post.user.last_name %}
+                <span> {{post.user.first_name}} {{post.user.last_name}}</span>
+                {% else %}
+                    <span> {{post.user.username}}</span>
+                {% endif %}
+            </p>
             <p>
                 {{post.description}}
             </p>
