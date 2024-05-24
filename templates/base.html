@@ -81,27 +81,13 @@ https://templatemo.com/tm-553-xtra-blog
                 {% if messages %}
                     {% for message in messages %}
                     <div class="alert alert-{{message.tags}} alert-dismissible">
-                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                        <!-- <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
                         {{message}}
                     </div>
                     {% endfor %}
                 {% endif %}
-
-            <!-- Search bar -->
-            <div class="row tm-row">
-                <div class="col-12">
-                    <form method="GET" action="{% url 'home' %}" class="form-inline tm-mb-80 tm-search-form" name="query">                
-                        <input class="form-control tm-search-input" name="query" type="text" placeholder="Search..." aria-label="Search">
-                        <button class="tm-search-button" type="submit">
-                            <i class="fas fa-search tm-search-icon" aria-hidden="true"></i>
-                        </button>                                
-                    </form>
-                </div>                
-            </div>   
-
-            <!-- Search bar ends  -->
 
             <!-- main -->
                 {% block main %}
