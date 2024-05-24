@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -14,7 +15,24 @@ from .utils import add_post_tags, remove_post_tags
 
 class HomePageView(View):
     def get(self, request):
-        posts = Post.objects.all()
+        query = request.GET.get("query")
+        if query == None or query.strip() == "":
+            posts = Post.objects.all()
+        else:
+            conditionals = (
+                Q(title__icontains=query)
+                | Q(user__username__icontains=query)
+                | Q(user__first_name__icontains=query)
+                | Q(user__last_name__icontains=query)
+            )
+            try:
+                tag = Tag.objects.get(name__icontains=query)
+                conditionals = conditionals | Q(tags=tag)
+            except Tag.DoesNotExist:
+                pass
+            posts = Post.objects.filter(conditionals)
+            messages.success(request, f"Showing results for '{query}'")
+
         return render(request, "home.html", {"active": "home", "posts": posts})
 
 
