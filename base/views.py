@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.views import View
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -16,6 +17,7 @@ from .utils import add_post_tags, remove_post_tags
 class HomePageView(View):
     def get(self, request):
         query = request.GET.get("query")
+
         if query == None or query.strip() == "":
             posts = Post.objects.all()
         else:
@@ -31,9 +33,29 @@ class HomePageView(View):
             except Tag.DoesNotExist:
                 pass
             posts = Post.objects.filter(conditionals)
-            messages.success(request, f"Showing results for '{query}'")
+            messages.success(request, f"Showing {posts.count()} results for '{query}'")
 
-        return render(request, "home.html", {"active": "home", "posts": posts})
+        paginator = Paginator(posts, 4)
+        page = request.GET.get("page")
+        current_page = paginator.get_page(page)
+        previous_page_number = (
+            current_page.previous_page_number() if current_page.has_previous() else None
+        )
+        next_page_number = (
+            current_page.next_page_number() if current_page.has_next() else None
+        )
+
+        return render(
+            request,
+            "home.html",
+            {
+                "active": "home",
+                "current_page": current_page,
+                "page_range": paginator.page_range,
+                "previous_page_number": previous_page_number,
+                "next_page_number": next_page_number,
+            },
+        )
 
 
 @method_decorator(login_required, name="dispatch")

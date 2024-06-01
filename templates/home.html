@@ -21,8 +21,10 @@
             <a href="{% url 'logout' %}">Logout?</a>
         </h1>
 
+        <!-- posts -->
+
         <div class="row tm-row">
-            {% for post in posts %}
+            {% for post in current_page %}
                 <article class="col-12 col-md-6 tm-post">
                     <hr class="tm-hr-primary">
                     <a href="{{ post.get_absolute_url }}" class="effect-lily tm-post-link tm-pt-60">
@@ -52,6 +54,33 @@
                 </article>
             {% endfor %}
         </div>
+
+        <!-- posts end -->
+
+        <!-- page buttons -->
+
+        <div class="row tm-row tm-mt-100 tm-mb-75">
+            <div class="tm-prev-next-wrapper">
+                <a href="{% url 'home' %}?page={{previous_page_number}}" class="mb-2 tm-btn tm-btn-primary tm-prev-next
+                {% if not previous_page_number %}disabled{% endif %} tm-mr-20">Prev</a>
+                <a href="{% url 'home' %}?page={{previous_page_number}}" class="mb-2 tm-btn tm-btn-primary
+                {% if not next_page_number %}disabled{% endif %} tm-prev-next">Next</a>
+            </div>
+            <div class="tm-paging-wrapper">
+                <span class="d-inline-block mr-3">Page</span>
+                <nav class="tm-paging-nav d-inline-block">
+                    <ul>
+                        {% for index in page_range %}
+                        <li class="tm-paging-item {% if index == current_page.number %}active{% endif %}">
+                            <a href="{% url 'home' %}?page={{index}}" class="mb-2 tm-btn tm-paging-link">{{index}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>                
+        </div>  
+
+        <!-- page buttons end -->
 
     {% else %}
             <h1><a href="{% url 'login' %}">Log In</a> to view posts.</h1>
