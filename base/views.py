@@ -32,7 +32,7 @@ class HomePageView(View):
                 conditionals = conditionals | Q(tags=tag)
             except Tag.DoesNotExist:
                 pass
-            posts = Post.objects.filter(conditionals)
+            posts = Post.objects.filter(conditionals).distinct()
             messages.success(request, f"Showing {posts.count()} results for '{query}'")
 
         paginator = Paginator(posts, 4)
