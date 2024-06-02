@@ -40,7 +40,7 @@ https://templatemo.com/tm-553-xtra-blog
                         Manage Account
                     </a></li>
 
-                    <li class="tm-nav-item"><a href="{% url 'create-post' %}" class="tm-nav-link">
+                    <li class="tm-nav-item {% if active == 'create_post' %}active{% endif %}"><a href="{% url 'create-post' %}" class="tm-nav-link">
                         <i class="fas fa-pen"></i>
                         +New Post
                     </a></li>

@@ -61,7 +61,7 @@ class HomePageView(View):
 @method_decorator(login_required, name="dispatch")
 class CreatePostView(View):
     form_class = PostForm
-    context = {"title": "Create"}
+    context = {"title": "Create", "active": "create_post"}
 
     def get(self, request):
         form = self.form_class()
